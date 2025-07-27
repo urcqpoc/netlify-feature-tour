@@ -8,11 +8,7 @@ exports.handler = async () => {
     if (stderr) {
       console.error('Error output:', stderr);
     }
-  } catch (err) {
-    console.error('Execution failed:', err);
-  }
-
-  return {
+    return {
     statusCode: 200,
     body: `stdout:
       ${stdout}
@@ -20,4 +16,7 @@ exports.handler = async () => {
       ${stderr}
     `
   };
+  } catch (err) {
+    console.error('Execution failed:', err);
+  }
 };
