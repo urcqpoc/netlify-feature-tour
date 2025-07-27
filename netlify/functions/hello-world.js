@@ -16,6 +16,9 @@ ${stderr}
 `
   };
   } catch (err) {
-    console.error('Execution failed:', err);
+    return {
+      statusCode: 200,
+      body: `Execution failed: ${err}`
+    }
   }
 };
