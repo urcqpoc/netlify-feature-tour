@@ -1,7 +1,23 @@
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
 exports.handler = async () => {
-  const mySecret = process.env.MY_SECRET;
+  try {
+    const { stdout, stderr } = await exec('ls -l');
+    console.log('Output:', stdout);
+    if (stderr) {
+      console.error('Error output:', stderr);
+    }
+  } catch (err) {
+    console.error('Execution failed:', err);
+  }
+
   return {
     statusCode: 200,
-    body: `hello world! I have a ${mySecret}`
+    body: `stdout:
+      ${stdout}
+      stderr:
+      ${stderr}
+    `
   };
 };
